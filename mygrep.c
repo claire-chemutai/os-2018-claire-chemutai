@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main( int argc, char * argv[] ){
+//int main(int argc, char * argv[]){
+int main(){
+	int i;
+	FILE * fpointer;
+	char *ret;
+	//for(i=1; i<argc+1; i++){
+		fpointer=fopen("file.txt","r");
+		char line[150];
 
-    FILE * fPtr;
-    char * word;
-    char line[150];
-    fPtr = fopen(argv[2], "r");
-
-        while (!feof(fPtr)){
-            fscanf(fPtr, "%s", line);
-            if (word== argv[1]){
-                fgets(line, 150,(FILE *)fPtr );
-                printf("%s", line);
-            }
-
-        }
-        fclose(fPtr);
-
-    return 0;
+		while (!feof(fpointer)){
+			fgets(line,150,fpointer);
+			if (strstr(line, "foo")){
+                printf("%s\n", line);
+			}
+		}
+		fclose(fpointer);
+	//}
+	return 0;
 }
