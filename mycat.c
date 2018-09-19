@@ -3,17 +3,24 @@
 #include <stdlib.h>
 
 int main(int argc, char * argv[]){
-	int i;
-	FILE * fpointer;
-	for(i=1; i<argc+1; i++){
+int i;
+FILE * fpointer;
+if(argc<2){
+	exit(1);
+}
+	for(i=1; i<argc; i++){
 		fpointer=fopen(argv[i],"r");
-		char line[150];
+		if(fpointer){
+		char line[500];
 
-		while (!feof(fpointer)){
-			fgets(line,150,fpointer);
+		while (fgets(line,500,fpointer)){
 			puts(line);
 		}
 		fclose(fpointer);
+	}else {
+		printf("mycat: cannot open file\n");
+		exit(1);
+	}
 	}
 	return 0;
 }
