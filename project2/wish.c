@@ -1,47 +1,27 @@
+#define LSH_TOK_BUFSIZE 64
+#define LSH_TOK_DELIM " \t\r\n\a"
+#define LSH_RL_BUFSIZE 1024
 #include <stdio.h>
 #include  <stdlib.h>
 #include <string.h>
-//#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 int main(int argc, char **argv)
 {
-  lsh_loop();
+    //char *line;
+    char **args;
+    int status;
+    printf("wish> ");
+    char *line = NULL;
+    ssize_t bufsize = 0; // have getline allocate a buffer for us
+    getline(&line, &bufsize, stdin);
+    pid_t pid, wpid;
 
-  return EXIT_SUCCESS;
-}
-void lsh_loop(void)
-{
-  char *line;
-  char **args;
-  int status;
 
-  do {
-    //printf("wish> ");
-    line = lsh_read_line("mycat.c");
-    args = lsh_split_line(line);
-    status = lsh_execute(args);
-
-    free(line);
-    free(args);
-  } while (status);
-}
-
-char *lsh_read_line(void)
-{
-  char *line = NULL;
-  ssize_t bufsize = 0; // have getline allocate a buffer for us
-  getline(&line, &bufsize, stdin);
-  return line;
-}
-
-int lsh_launch(char **args)
-{
-  pid_t pid, wpid;
-  int status;
-
-  pid = fork();
-  if (pid == 0) {
+    pid = fork();
+    if (pid == 0) {
     // Child process
     if (execvp(args[0], args) == -1) {
       perror("lsh");
@@ -57,11 +37,10 @@ int lsh_launch(char **args)
     } while (!WIFEXITED(status) && !WIFSIGNALED(status));
   }
 
-  return 1;
-}
-int lsh_execute(char **args)
-{
-  int i;
+    free(line);
+    free(args);
+
+    int i;
 
   if (args[0] == NULL) {
     // An empty command was entered.
@@ -74,5 +53,7 @@ int lsh_execute(char **args)
     }
   }
 
-  return lsh_launch(args);
+
+   printf("done");
 }
+
