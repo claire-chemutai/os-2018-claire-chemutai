@@ -17,29 +17,24 @@
 // Greeting shell during startup
 void init_shell()
 {
-	clear();
-	printf("\n\n\n\n******************"
-		"************************");
-	printf("\n\n\n\t****MY SHELL****");
-	printf("\n\n\t-USE AT YOUR OWN RISK-");
-	printf("\n\n\n\n*******************"
-		"***********************");
+//	clear();
+	printf("\n");	
 	char* username = getenv("USER");
 	printf("\n\n\nUSER is: @%s", username);
 	printf("\n");
 	sleep(1);
-	clear();
+//	clear();
 }
 
 // Function to take input
 int takeInput(char* str)
 {
-	char* buf;
+	char* buffer;
 
-	buf = readline("\n>>> ");
-	if (strlen(buf) != 0) {
-		add_history(buf);
-		strcpy(str, buf);
+	buffer = readline("wish> ");
+	if (strlen(buffer) != 0) {
+		add_history(buffer);
+		strcpy(str, buffer);
 		return 0;
 	} else {
 		return 1;
@@ -52,6 +47,8 @@ void printDir()
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd));
 	printf("\nDir: %s", cwd);
+        printf("\n");
+
 }
 
 // Function where the system command is executed
@@ -134,8 +131,6 @@ void execArgsPiped(char** parsed, char** parsedpipe)
 void openHelp()
 {
 	puts("\n***WELCOME TO MY SHELL HELP***"
-		"\nCopyright @ Suprotik Dey"
-		"\n-Use the shell at your own risk..."
 		"\nList of Commands supported:"
 		"\n>cd"
 		"\n>ls"
@@ -168,7 +163,7 @@ int ownCmdHandler(char** parsed)
 
 	switch (switchOwnArg) {
 	case 1:
-		printf("\nGoodbye\n");
+		printf("\nexit\n");
 		exit(0);
 	case 2:
 		chdir(parsed[1]);
