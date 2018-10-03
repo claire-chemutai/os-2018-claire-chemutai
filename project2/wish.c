@@ -5,7 +5,7 @@
 #include  <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-//#include <sys/wait.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 /*
@@ -14,6 +14,7 @@
 int lsh_cd(char **args);
 int lsh_help(char **args);
 int lsh_exit(char **args);
+int wish_path(char **args);
 
 /*
   List of builtin commands, followed by their corresponding functions.
@@ -92,8 +93,8 @@ int main(int argc, char **argv)
 do{
     printf("wish> ");
     char *line = NULL;
-    //ssize_t bufsize = 0; // have getline allocate a buffer for us
-    getline(&line, &bufsize, stdin);
+    ssize_t buffsize = 0; // have getline allocate a buffer for us
+    getline(&line, &buffsize, stdin);
 
     int bufsize = LSH_TOK_BUFSIZE, position = 0;
   char **tokens = malloc(bufsize * sizeof(char*));
