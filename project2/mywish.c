@@ -170,7 +170,7 @@ int ownCmdHandler(char** parsed)
 		return 1;
 	case 4:
 		username = getenv("USER");
-		printf("\nHello %s.
+		printf("\nHello %s."
 			"\nUse help to know more..\n",
 			username);
 		return 1;
