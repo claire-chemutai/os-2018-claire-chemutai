@@ -2,11 +2,14 @@
 #include<string.h>
 #include<sys/types.h>
 #include<sys/wait.h>
+#include<sys/stat.h>
+#include<fcntl.h>
 #include<readline/readline.h>
 #include<readline/history.h>
 #include<stdlib.h>
 #include<stdio.h>
 #include<unistd.h>
+#include<pthread.h>
 #define MAXLIST 100
 #define MAXCOM 1000
 
@@ -29,7 +32,6 @@ void init_shell()
 int readInput(char* str)
 {
 	char* buffer;
-
 	buffer = readline("wish> ");
 	if (strlen(buffer) != 0) {
 		add_history(buffer);
@@ -236,7 +238,7 @@ int processStr(char* str, char** parsed, char** parsedpipe)
 		return 1 + piped;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
 	char inputstr[MAXCOM], *parsedArgs[MAXLIST];
 	char* parsedArgsPiped[MAXLIST];
@@ -246,6 +248,42 @@ int main()
 	while (1) {
 		// print shell line
 		directory();
+		if (strstr(inputstr, ">")){
+			printf("%s", argv[1]);
+			int fd;
+			int ret;
+			fd = open(argv[2],O_CREAT | O_APPEND | O_WRONLY);
+			if(fd<0){
+				perror("open");
+				exit(1);
+				}
+			ret = dup2(fd,1);
+			if(ret<0){
+				perror("dup2");
+				exit(1);
+			}
+			system("argv[0] /tmp");
+			close (fd);
+			return 0;
+			}
+			
+			if (strstr(inputstr, "&")){
+			int i;
+			int a[100];
+			
+				for (i=0;i<argc; i++){
+						pthread_t thrd1;
+						int thret1;
+						char *msg= "\n";
+						memset(a, 0, sizeof(a));
+						thret1=pthread_create(&thrd1, NULL, *argv[i], (void *)msg);
+						pthread_join(thrd1, NULL);
+						printf("thret1 = %d\n", NULL);
+					} 
+				return 0;
+				}
+
+		
 		// take input
 		if (readInput(inputstr))
 			continue;
