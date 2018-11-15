@@ -1,9 +1,4 @@
-/***************************************************************************//**
-  @file         main.c
-  @author       Waweru, Alex Njoroge
-  @date         Sunday,  30 September 2018
-  @brief        Wish (Waweru Interactive SHell)
-*******************************************************************************/
+
 
 #include <stdlib.h>
 #include <string.h>
